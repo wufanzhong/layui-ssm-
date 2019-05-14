@@ -1,25 +1,24 @@
 # layui+ssm实现动态下拉框
 # 目前遇到了问题，希望有高手能帮忙解决一下
+# 1. JSP内容
+<form class="layui-form" action="">
 
-
- //JSP
- <div class="layui-form-item">
-        <label class="layui-form-label">选择场地</label>
+       
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择场地</label>
             <div class="layui-input-block">
                 <select name="selectId" id="interes" lay-filter="spceinfo">
                     <option value=""></option>
                 </select>
             </div>
-</div>
+        </div>
+</form>
 
+#
+# 分割线------------------------------------------------------------------------
 
-//js
-<script>
-//1.想实现layui的下拉框动态显示数据库中的内容
-//2.显示的字段是名称，但选中时返回的字段是对应的编号
-//一下是目前写的代码
-
-layui.use(['form', 'layedit', 'laydate', 'layer','jquery', 'upload'], function(){
+# 2. js部分
+    layui.use(['form', 'layedit', 'laydate', 'layer','jquery', 'upload'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,layedit = layui.layedit
@@ -44,12 +43,29 @@ layui.use(['form', 'layedit', 'laydate', 'layer','jquery', 'upload'], function()
                 layui.form.render("select");//重新渲染 固定写法
             }
         });
-
     });
-</script>
+ 
+# 
+# 分割线------------------------------------------------------------------------
 
-//后端Controller
-@RequestMapping("/getSpaceInfoList")
+# 3. 后端Controller
+@Controller
+@RequestMapping(value = "/space")
+public class SpaceInfoController {
+
+    @Resource
+    private SpaceInfoService spaceInfoService;
+
+    private SpaceInfo jsonData(String data){
+        JSONObject jsonObject = JSON.parseObject(data);
+        int snum =  jsonObject.getInteger("snum");
+        String sname = jsonObject.getString("sname");
+        SpaceInfo spaceInfo = new SpaceInfo(snum, sname);
+        return spaceInfo;
+    }
+
+    //下拉框
+    @RequestMapping("/getSpaceInfoList")
     public @ResponseBody
     Map<String, Object> getSpaceInfoList(){
         List<SpaceInfo> countData = spaceInfoService.findAll();
@@ -61,3 +77,4 @@ layui.use(['form', 'layedit', 'laydate', 'layer','jquery', 'upload'], function()
         resultMap.put("data",members);
         return resultMap;
     }
+}
