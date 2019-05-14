@@ -14,8 +14,7 @@
         </div>
 </form>
 
-#
-# 分割线------------------------------------------------------------------------
+
 
 # 2. js部分
     layui.use(['form', 'layedit', 'laydate', 'layer','jquery', 'upload'], function(){
@@ -45,13 +44,9 @@
         });
     });
  
-# 
-# 分割线------------------------------------------------------------------------
+
 
 # 3. 后端Controller
-@Controller
-@RequestMapping(value = "/space")
-public class SpaceInfoController {
 
     @Resource
     private SpaceInfoService spaceInfoService;
@@ -77,4 +72,3 @@ public class SpaceInfoController {
         resultMap.put("data",members);
         return resultMap;
     }
-}
